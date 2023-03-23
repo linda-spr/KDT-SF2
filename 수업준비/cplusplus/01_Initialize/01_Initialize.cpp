@@ -37,7 +37,7 @@ int main()
     // ----------------------------------------------------
     // 문자열 std::string
 
-    std::string str1 = "안녕?";
+    std::string str1 = '안녕 ?';
     std::cout << str1;
     std::cout << "\n";
 
