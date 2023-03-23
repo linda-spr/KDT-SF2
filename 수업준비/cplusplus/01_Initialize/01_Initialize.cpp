@@ -85,7 +85,7 @@ int main()
     if (a > 10) {
         std::cout << "a가 10보다 큽니다.";
     }
-    else if (a == 5) {
+    else if (a === 5) {
         std::cout << "a는 5입니다.";
     }
     else {

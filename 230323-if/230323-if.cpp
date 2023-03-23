@@ -11,27 +11,38 @@
 // 가장 먼저 호출(실행)되는 함수
 int main()
 {
-    std::cout << "Hello World!\n";
+	/*
+		if (조건1) {
+			조건이 참일 때 실행할 것
+		} else if ( 조건2 ) {
+			조건 1이 거짓이고, 조건2가 참일 때 실행
+		} else {
+			// 모든 조건이 거짓일 때 실행
+		}
+	*/
+	//char abc = 'a';
 
-    // 자료형 변수명 = 값;
-    int b = 1;
+	//// switch 조건문은 기본 타입만 비교가 가능하다.
+	//switch (abc) {
+	//	case 'a':
+	//		std::cout << "a";
+	//	break;
+	//	case 'b':
+	//		std::cout << "b";
+	//	break;
+	//	default:
+	//		std::cout << ""; // 기본실행코드
+	//	break;
+	//}
 
-    // bool, char, int, float
-    bool bool123 = true;
-    bool123 = false;
-
-    char char123 = 'a';
-
-    int int123 = 1;
-
-    float float123 = 0.1
-
-
-    // iostream : 입출력하는 친구
-    // std::cout 출력하는 친구
-    //  cout : console out
-    // ~~~ 100줄
-    return 0;
+	int a = 5;
+	if (a > 5) {
+		std::cout << "5보다 크다";
+	}
+	else {
+		std::cout << "5보다 크지 않다.";
+	}
+	a > 5 ? std::cout << "5보다크다" : std::cout << "5보다 크지 않다.";
 }
 
 // 프로그램 실행: <Ctrl+F5> 또는 [디버그] > [디버깅하지 않고 시작] 메뉴
