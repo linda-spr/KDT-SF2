@@ -1,6 +1,9 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+
+using namespace std;
 
 int main()
 {
@@ -110,4 +113,27 @@ int main()
     else std::cout << "로그인 실패\n";
     
     loginFile.close();
+
+    // 실습 3
+
+    ifstream infile("test_file.txt");
+    ofstream outfile("output.txt");
+    string inLine;
+    vector<string> v1;
+
+    if (infile.is_open() && outfile.is_open()) {
+        while (getline(infile, inLine)) {
+            v1.push_back(inLine);
+        }
+
+        for (int i = v1.size() - 1; i >= 0; i--) {
+            outfile << v1[i] << endl;
+        }
+
+        infile.close();
+        outfile.close();
+    }
+    else {
+        cout << "파일 없음\n";
+    }
 }
