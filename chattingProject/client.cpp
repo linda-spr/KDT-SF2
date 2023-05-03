@@ -4,11 +4,14 @@
 #include <sstream>
 #include <string>
 #include <thread>
+#include <conio.h>
 #include <mysql/jdbc.h>
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 
 #define MAX_SIZE 1024
+#define ENTER 13
+#define BACK_SPACE 8
 
 using std::cout;
 using std::cin;
@@ -28,11 +31,12 @@ sql::ResultSet* result;
 // 데이터베이스 주소, 사용자, 비밀번호
 const string server = "tcp://127.0.0.1:3306";
 const string username = "root";
-const string password = "1234qwer*";
+const string password = "1234";
 
 bool login(string id, string pw);
 bool idCheck(string id);
 void signup(string id, string pw);
+void chatHistory();
 
 int chat_recv();
 
@@ -72,12 +76,25 @@ int main() {
                 isSignup = true;
                 break;
             }
+
+            // 비밀번호 *표시
             cout << "비밀번호를 입력하세요: ";
-            cin >> pw;
+            while (1) {
+                char c = _getch();
+                if (c == ENTER) break;
+                else if (c >= 33 && c <= 126) {
+                    pw += c;
+                    cout << "*";
+                }
+                else if (c == BACK_SPACE) {
+                    pw = pw.substr(0, pw.size() - 1);
+                    cout << "\b \b";
+                }
+            }
+            cout << endl;
+
             if (login(id, pw)) {
                 my_id = id;
-                cout << id << "님 환영합니다!" << endl;
-                cout << "----------------------------------------------------------" << endl;
                 break;
             }
             else {
@@ -107,6 +124,13 @@ int main() {
         break;
     }
 
+    // 콘솔 창 클리어
+    system("cls");
+
+    // 채팅 내역 불러오기
+    chatHistory();
+    cout << "----------------------------------------------------------" << endl;
+
     WSADATA wsa;
     int code = WSAStartup(MAKEWORD(2, 2), &wsa);
 
@@ -122,7 +146,7 @@ int main() {
 
         while (1) {
             if (!connect(client_sock, (SOCKADDR*)&client_addr, sizeof(client_addr))) {
-                cout << "Server Connect" << endl;
+                // 입장 시 서버로 아이디 전송
                 send(client_sock, my_id.c_str(), my_id.length(), 0);
                 break;
             }
@@ -186,6 +210,25 @@ void signup(string id, string pw) {
     cout << "회원가입이 완료되었습니다." << endl;
 }
 
+// 채팅 내역 불러오기
+void chatHistory() {
+    string from, to, msg;
+    stmt = con->createStatement();
+    result = stmt->executeQuery("SELECT * FROM chat");
+
+    while (result->next()) {
+        from = result->getString(2).c_str();
+        to = result->getString(3).c_str();
+        msg = result->getString(4).c_str();
+
+        if (to == "") cout << from << " : " << msg << endl;
+        else cout << from << "(" << to << ") : " << msg << endl;
+    }
+
+    delete stmt;
+}
+
+// 서버로부터 받은 메세지 출력
 int chat_recv() {
     char buf[MAX_SIZE] = { };
     string msg;
